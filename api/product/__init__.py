@@ -1,10 +1,11 @@
 from flask import Blueprint, jsonify
 from flask import request
+from werkzeug.exceptions import RequestEntityTooLarge
 import os
-
+from settings import UPLOAD_FOLDER
 
 productor_profile = Blueprint('prodoct', __name__)
-UPLOAD_FOLDER = '/Users/hubmediadev/Desktop/luida-server/upload/'
+# UPLOAD_FOLDER = '/Users/hubmediadev/Desktop/luida-server/upload/'
 
 
 @productor_profile.route('/p_profile', methods=['POST'])
@@ -16,7 +17,6 @@ def create_profile():
         for file in img_fils:
             img_name = file.filename
             try:
-                print(file.size)
                 file.save(os.path.join(UPLOAD_FOLDER, img_name))
 
             except Exception as e:
@@ -27,6 +27,9 @@ def create_profile():
                 })
 
         return jsonify({'status': 'upload success'})
+
+    except RequestEntityTooLarge as e:
+        return jsonify({'status': 'request too large'})
 
     except Exception as e:
         print(str(e))

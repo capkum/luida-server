@@ -1,8 +1,8 @@
 DB_URI = 'mysql+pymysql://luida:luida123@localhost/luida?charset=utf8'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = DB_URI
-MAX_CONTENT_LENGTH = 1024  # 1024 * 1024 * 16 
-
+MAX_CONTENT_LENGTH = 1024 * 1024 * 16
+UPLOAD_FOLDER = '/Users/hubmediadev/Desktop/luida-server/upload/'
 
 # 상태코드
 STATUS_SUCCESS = 200
