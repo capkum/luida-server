@@ -3,6 +3,7 @@ from user.models import db
 from flask import Blueprint
 from flask import request, jsonify
 import jwt
+import datetime
 
 users = Blueprint('user', __name__)
 secret_key = 'hubmedia'
@@ -41,11 +42,17 @@ def login():
         if type(result) is 'NoneType':
             return 'login fail'
 
+        current_time = datetime.datetime.utcnow()
+
+        # 데이터부의 암호화가 필요함
         create_token = jwt.encode(
             {
                 'email': result.email,
-                'id': result.id
-            }, secret_key, algorithm='HS256')
+                'id': result.id,
+                'exp': current_time + datetime.timedelta(seconds=30)
+            },
+            secret_key,
+            algorithm='HS256')
 
         json_data = jsonify(
             email=result.email,
@@ -60,11 +67,6 @@ def login():
     except Exception as e:
         print(str(e))
         return 'login fail'
-
-
-@users.route('/logout')
-def logout():
-    return 'logout'
 
 
 @users.route('/signout', methods=['DELETE'])
@@ -85,6 +87,10 @@ def signout():
             rt = jsonify(email=_email, passwd=_passwd,
                          status='delete success')
             return rt
+
+    except jwt.ExpiredSignatureError as e:
+        print(str(e))
+        return jsonify({'status': '토큰 기간 만료'})
 
     except Exception as e:
         print(str(e))
