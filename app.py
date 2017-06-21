@@ -1,7 +1,7 @@
 from flask import Flask
-from user import users
 from api.product import productor_profile
-from user.models import db
+from api.users import users
+from api.users.models import db
 
 
 app = Flask(__name__)
