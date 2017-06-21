@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from flask import Blueprint
 from api.users.models import User
 from api.users.models import db
 from flask import request, jsonify
-import jwt
 import datetime
-
+import jwt
 
 users = Blueprint('users', __name__)
 secret_key = 'hubmedia'

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 from flask import Blueprint, jsonify
 from flask import request
 from werkzeug.exceptions import RequestEntityTooLarge
@@ -6,7 +8,6 @@ from werkzeug import secure_filename
 from settings import UPLOAD_FOLDER
 
 productor_profile = Blueprint('prodoct', __name__)
-# UPLOAD_FOLDER = '/Users/hubmediadev/Desktop/luida-server/upload/'
 
 
 @productor_profile.route('/p_profile', methods=['POST'])
@@ -38,7 +39,7 @@ def create_profile():
 
 
 def allowed_file(filename):
-    """ 확장자 검색 """
+    """ 확장자 체크 """
     ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
     return '.' in filename and \
         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
