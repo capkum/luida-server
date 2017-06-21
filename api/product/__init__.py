@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify
 from flask import request
 from werkzeug.exceptions import RequestEntityTooLarge
 import os
+from werkzeug import secure_filename
 from settings import UPLOAD_FOLDER
 
 productor_profile = Blueprint('prodoct', __name__)
@@ -15,7 +16,7 @@ def create_profile():
         img_fils = request.files.getlist("uploadedfile")
 
         for file in img_fils:
-            img_name = file.filename
+            img_name = secure_filename(file.filename)
             try:
                 file.save(os.path.join(UPLOAD_FOLDER, img_name))
 
