@@ -1,11 +1,12 @@
-from user.models import User
-from user.models import db
 from flask import Blueprint
+from api.users.models import User
+from api.users.models import db
 from flask import request, jsonify
 import jwt
 import datetime
 
-users = Blueprint('user', __name__)
+
+users = Blueprint('users', __name__)
 secret_key = 'hubmedia'
 
 

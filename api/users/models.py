@@ -1,6 +1,6 @@
 import uuid
 
-from user.base import db
+from api.users.base import db
 from sqlalchemy.orm import class_mapper
 
 
