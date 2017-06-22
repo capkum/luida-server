@@ -76,6 +76,10 @@ def signout():
         print(str(e))
         return jsonify({'status': '토큰 기간 만료'})
 
+    except jwt.DecodeError as e:
+        print(str(e))
+        return jsonify({'status': '잘못된 토큰'})
+
     except Exception as e:
         print(str(e))
         return 'delete fail'
