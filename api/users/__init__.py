@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import Blueprint
-from api.users.models import User
+from api.users.models import Users
 from api.users.models import db
 from flask import request, jsonify
 import datetime
@@ -18,7 +18,7 @@ def create():
         _email = request.values.get('email')
         _passwd = request.values.get('passwd')
 
-        createUser = User(_username, _email, _passwd)
+        createUser = Users(_username, _email, _passwd)
         db.session.add(createUser)
         db.session.commit()
 
