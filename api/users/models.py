@@ -1,20 +1,6 @@
 # -*- coding: utf-8 -*-
-import uuid
-
-from api.users.base import db
-from sqlalchemy.orm import class_mapper
-
-
-class ToDictMixin(object):
-    def to_dict(self):
-        mapper = class_mapper(self.__class__)
-        ret = {}
-        for column in mapper.columns:
-            value = getattr(self, column.name)
-            if isinstance(value, uuid.UUID):
-                value = str(value)
-            ret[column.name] = value
-        return ret
+from api.database import ToDictMixin
+from api.database import db
 
 
 class Users(db.Model, ToDictMixin):
