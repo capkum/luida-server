@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
+import os
+
+ROOT_PATH = os.path.dirname(os.path.abspath(__file__))
 
 DB_URI = 'mysql+pymysql://luida:luida123@localhost/luida?charset=utf8'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = DB_URI
 MAX_CONTENT_LENGTH = 1024 * 1024 * 16
-UPLOAD_FOLDER = '/Users/hubmediadev/Desktop/luida-server/upload/'
+UPLOAD_FOLDER = os.path.join(ROOT_PATH, 'upload')
+
 SECURET_KEY = 'hubmedia'
-JWT_EXPIRE= 30
+JWT_EXPIRE = 30
 
 
 # 상태코드

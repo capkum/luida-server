@@ -1,13 +1,14 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 from flask import Blueprint, jsonify
 from flask import request
-from api.product.models import Products
 from api.database import db
 from werkzeug.exceptions import RequestEntityTooLarge
 import os
 from werkzeug import secure_filename
 from settings import UPLOAD_FOLDER
+
+from .models import Products
 
 productor_profile = Blueprint('prodoct', __name__)
 
@@ -24,7 +25,7 @@ def create_profile():
                 file.save(os.path.join(UPLOAD_FOLDER, img_name))
                 insert_data = Products(img_name)
                 db.session.add(insert_data)
-                # db.session.commit()
+                db.session.commit()
 
             except Exception as e:
                 print(str(e))
