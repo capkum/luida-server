@@ -4,7 +4,7 @@ from flask import Blueprint
 from flask import request, jsonify
 from api.users.models import Users
 from api.database import db
-from settings import SECURET_KEY
+from settings import SECURET_KEY, LOGIN_ERR
 from common import passwd_crypt
 import datetime
 import jwt
@@ -16,18 +16,19 @@ auth = Blueprint('auth', __name__)
 def login():
     """
     로그인
-    ToDo
-    1. 토큰 검증 모둘 사용
     """
     _email = request.values.get('email')
     _passwd = passwd_crypt(request.values.get('passwd'))
 
     try:
         result = Users.query.filter_by(email=_email, passwd=_passwd).first()
-        print(_email)
+
         # 로그인 결과
-        if type(result) is 'NoneType':
-            return 'login fail'
+        if result is None:
+            return jsonify({
+                'status': LOGIN_ERR,
+                'msg': 'login fail',
+            })
 
         current_time = datetime.datetime.utcnow()
 
@@ -52,8 +53,7 @@ def login():
         return json_data
 
     except Exception as e:
-        print(str(e))
-        return 'login fail'
+        return 'login fail1'
 
 
 @auth.route('/signout', methods=['DELETE'])
