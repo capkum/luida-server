@@ -4,9 +4,10 @@ from flask import Blueprint, jsonify
 from flask import request
 from api.database import db
 from werkzeug.exceptions import RequestEntityTooLarge
-import os
 from werkzeug import secure_filename
 from settings import UPLOAD_FOLDER
+from common.util import rename_upload_file
+import os
 
 from .models import Products
 
@@ -20,7 +21,8 @@ def create_profile():
         img_fils = request.files.getlist("uploadedfile")
 
         for file in img_fils:
-            img_name = secure_filename(file.filename)
+            img_name = rename_upload_file(secure_filename(file.filename))
+
             try:
                 file.save(os.path.join(UPLOAD_FOLDER, img_name))
                 insert_data = Products(img_name)
@@ -42,10 +44,3 @@ def create_profile():
     except Exception as e:
         print(str(e))
         return jsonify({'status': 'upload fialed'})
-
-
-def allowed_file(filename):
-    """ 확장자 체크 """
-    ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS

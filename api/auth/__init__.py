@@ -5,7 +5,7 @@ from flask import request, jsonify
 from api.users.models import Users
 from api.database import db
 from settings import SECURET_KEY, LOGIN_ERR
-from common import passwd_crypt
+from common.crypto import passwd_crypt
 import datetime
 import jwt
 

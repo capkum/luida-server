@@ -4,7 +4,7 @@ from flask import Blueprint
 from api.users.models import Users
 from api.database import db
 from flask import request, jsonify
-import hashlib
+from common.crypto import passwd_crypt
 
 users = Blueprint('users', __name__)
 
@@ -28,7 +28,3 @@ def create():
     except Exception as e:
         print(str(e))
         return '회원가입 실패'
-
-
-def passwd_crypt(value):
-    return hashlib.sha256(value.encode('ascii')).hexdigest()
