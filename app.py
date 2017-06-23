@@ -2,7 +2,6 @@ from flask import Flask
 from api.product import productor_profile
 from api.users import users
 from api.users.models import db
-from api.auth import auth
 from flask_migrate import Migrate
 
 
