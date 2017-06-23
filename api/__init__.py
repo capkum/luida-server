@@ -1,2 +1,6 @@
-# -*- coding: utf-8 -*-
-__all__ = ['product', 'users']
+__all__ = [
+    'auth',
+    'database',
+    'product',
+    'users'
+]
