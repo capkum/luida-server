@@ -2,7 +2,6 @@
 
 from flask import Blueprint
 from api.users.models import Users
-# from api.users.models import db
 from api.database import db
 from flask import request, jsonify
 import hashlib

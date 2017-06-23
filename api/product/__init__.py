@@ -2,6 +2,8 @@
 
 from flask import Blueprint, jsonify
 from flask import request
+from api.product.models import Products
+from api.database import db
 from werkzeug.exceptions import RequestEntityTooLarge
 import os
 from werkzeug import secure_filename
@@ -20,6 +22,9 @@ def create_profile():
             img_name = secure_filename(file.filename)
             try:
                 file.save(os.path.join(UPLOAD_FOLDER, img_name))
+                insert_data = Products(img_name)
+                db.session.add(insert_data)
+                # db.session.commit()
 
             except Exception as e:
                 print(str(e))

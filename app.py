@@ -1,7 +1,7 @@
 from flask import Flask
-from api.product import productor_profile
-from api.users import users
 from api.database import db
+from api.users import users
+from api.product import productor_profile
 from flask_migrate import Migrate
 
 
