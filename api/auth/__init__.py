@@ -2,35 +2,29 @@
 
 from flask import Blueprint
 from flask import request, jsonify
-from api.users.models import Users
+from api.account.models import Accounts
 from api.database import db
-from settings import SECURET_KEY, LOGIN_ERR
 from common.crypto import passwd_crypt
 import datetime
 import jwt
+import settings
 
 auth = Blueprint('auth', __name__)
 
 
 @auth.route('/login', methods=['POST'])
 def login():
-    """
-    로그인
-    """
+    """ 로그인 """
     _email = request.values.get('email')
     _passwd = passwd_crypt(request.values.get('passwd'))
+    current_time = datetime.datetime.utcnow()
 
     try:
-        result = Users.query.filter_by(email=_email, passwd=_passwd).first()
+        result = Accounts.query.filter_by(email=_email, passwd=_passwd).first()
 
         # 로그인 결과
         if result is None:
-            return jsonify({
-                'status': LOGIN_ERR,
-                'msg': 'login fail',
-            })
-
-        current_time = datetime.datetime.utcnow()
+            return jsonify(status=settings.LOGIN_ERR)
 
         # 데이터부의 암호화가 필요함
         create_token = jwt.encode(
@@ -39,21 +33,16 @@ def login():
                 'id': result.id,
                 'exp': current_time + datetime.timedelta(seconds=30)
             },
-            SECURET_KEY,
+            settings.SECURET_KEY,
             algorithm='HS256')
 
-        json_data = jsonify(
-            email=result.email,
-            username=result.username,
-            status='login success'
-        )
-
+        json_data = jsonify(status=settings.SUCCESS)
         json_data.headers.add('token', create_token)
 
         return json_data
 
     except Exception as e:
-        return 'login fail1'
+        return jsonify(status=settings.LOGIN_ERR)
 
 
 @auth.route('/signout', methods=['DELETE'])
@@ -70,9 +59,11 @@ def signout():
         _passwd = request.values.get('passwd')
 
         user_token = request.headers.get('token')
-        userid = jwt.decode(user_token, SECURET_KEY, algorithm='HS256')
+        userid = jwt.decode(
+            user_token, settings.SECURET_KEY, algorithm='HS256')
 
-        user = Users.query.filter_by(id=userid['id'], passwd=_passwd).first()
+        user = Accounts.query.filter_by(
+            id=userid['id'], passwd=_passwd).first()
 
         if type(user) is not 'NoneType':
             db.session.delete(user)

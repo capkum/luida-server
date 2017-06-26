@@ -3,7 +3,6 @@ import http
 from flask import Flask, jsonify
 from api.database import db
 from api.auth import auth
-from api.users import users
 from api.account import acnt
 from api.product import productor_profile
 from flask_migrate import Migrate
@@ -37,7 +36,6 @@ TARGET_HTTP_ERROR_CODES = (
 
 app = Flask(__name__)
 app.config.from_object('settings')
-app.register_blueprint(users)
 app.register_blueprint(auth)
 app.register_blueprint(acnt)
 app.register_blueprint(productor_profile)
