@@ -14,15 +14,16 @@ JWT_EXPIRE = 30
 
 
 # 상태코드
-STATUS_SUCCESS = 200
+SUCCESS = 200
 
 # 로그인 에러
 LOGIN_ERR = 4000
 # 회원가입 에러
-SIGNUP = 4001
+ACCOUNT_ERR = 4001
+Duplicate_ERR = 4002
 
 # 토큰 에러
-TOOKEN_ERROR = 3000
+TOOKEN_ERR = 3000
 # 토큰 유효기간 에러
 EXPIRE_SIGNATURE_ERR = 3001
 
