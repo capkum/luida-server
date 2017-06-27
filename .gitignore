@@ -105,3 +105,6 @@ ENV/
 
 # download
 download/
+
+# vagrant
+vagrant/*
