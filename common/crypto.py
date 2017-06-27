@@ -3,6 +3,8 @@ import hashlib
 import base64
 from Crypto import Random  # noqa
 from Crypto.Cipher import AES
+from .util import creat_timestamp
+import uuid
 
 BS = 16
 
@@ -47,6 +49,19 @@ def passwd_crypt(value):
     """ 가입시/로그인시 암호화  """
     return hashlib.sha256(value.encode('ascii')).hexdigest()
 
-# message = '한글을 테스트 합니다.'
-# enc = AESCipher(CRYPTO_KEY).encrypt(message)
-# dec = AESCipher(CRYPTO_KEY).decrypt(enc)
+
+def token_generator():
+    """
+    토큰 생성기
+    총 문자열 길이(46)
+    """
+    gen_token = str(uuid.uuid4())
+    expire_time = creat_timestamp() + 60
+    return gen_token+str(expire_time)
+
+
+if __name__ == '__main__':
+    print(len(token_generator()))
+    # message = '한글을 테스트 합니다.'
+    # enc = AESCipher(CRYPTO_KEY).encrypt(message)
+    # dec = AESCipher(CRYPTO_KEY).decrypt(enc)

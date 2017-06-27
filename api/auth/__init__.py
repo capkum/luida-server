@@ -4,10 +4,10 @@ from flask import Blueprint
 from flask import request, jsonify
 from api.account.models import Accounts
 from api.database import db
-from common.crypto import passwd_crypt
-import datetime
+from common.crypto import passwd_crypt, token_generator
 import jwt
 import settings
+
 
 auth = Blueprint('auth', __name__)
 
@@ -17,7 +17,6 @@ def login():
     """ 로그인 """
     _email = request.values.get('email')
     _passwd = passwd_crypt(request.values.get('passwd'))
-    current_time = datetime.datetime.utcnow()
 
     try:
         result = Accounts.query.filter_by(email=_email, passwd=_passwd).first()
@@ -26,23 +25,21 @@ def login():
         if result is None:
             return jsonify(status=settings.LOGIN_ERR)
 
-        # 데이터부의 암호화가 필요함
-        create_token = jwt.encode(
-            {
-                'email': result.email,
-                'id': result.id,
-                'exp': current_time + datetime.timedelta(seconds=30)
-            },
-            settings.SECURET_KEY,
-            algorithm='HS256')
+        # 토큰 생성
+        create_token = token_generator()
 
-        json_data = jsonify(status=settings.SUCCESS)
+        # return data
+        json_data = jsonify(
+            status=settings.SUCCESS,
+            userid=result.seq
+            )
         json_data.headers.add('token', create_token)
 
         return json_data
 
     except Exception as e:
-        return jsonify(status=settings.LOGIN_ERR)
+        print(str(e))
+        return jsonify(status=settings.EMAIL_PW_ERR)
 
 
 @auth.route('/signout', methods=['DELETE'])

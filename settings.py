@@ -13,14 +13,22 @@ SECURET_KEY = 'hubmedia'
 JWT_EXPIRE = 30
 
 
+# ToDo
+# 상태코드를 따로 작성해야됨
+# 지금은 일단 이대로
+
 # 상태코드
 SUCCESS = 200
 
 # 로그인 에러
 LOGIN_ERR = 4000
+EMAIL_PW_ERR = 4001
+
 # 회원가입 에러
-ACCOUNT_ERR = 4001
-Duplicate_ERR = 4002
+ACCOUNT_ERR = 4100
+DUPLICATE_ERR = 4101
+NONTYPE_ERR = 4103
+
 
 # 토큰 에러
 TOOKEN_ERR = 3000
