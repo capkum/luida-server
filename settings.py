@@ -19,6 +19,7 @@ JWT_EXPIRE = 30
 
 # 상태코드
 SUCCESS = 200
+DB_CONNECT_ERR = 2000
 
 # 로그인 에러
 LOGIN_ERR = 4000

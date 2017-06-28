@@ -30,13 +30,11 @@ def account():
         return jsonify(status=settings.SUCCESS)
 
     except IntegrityError as e:
-        print(str(e))
         db.session.rollback()
         return jsonify(status=settings.DUPLICATE_ERR)
 
     except pymysql.err.OperationalError as e:
-        print(str(e))
-        return jsonify(status=settings.NONTYPE_ERR)
+        return jsonify(status=settings.DB_CONNECT_ERR)
 
     except AttributeError:
         return jsonify(status=settings.NONTYPE_ERR)
