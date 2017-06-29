@@ -5,7 +5,12 @@ from api.database import db
 import datetime
 
 
-class Accounts(db.Model, ToDictMixin):
+class TimestampMxin(object):
+    updated_at = db.Column(db.DateTime, default=datetime.datetime.now())
+    created_at = db.Column(db.DateTime, default=datetime.datetime.now())
+
+
+class Accounts(db.Model, ToDictMixin, TimestampMxin):
     seq = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(12), nullable=False, doc='이름')
     email = db.Column(db.String(120), unique=True, nullable=False, doc='email')
@@ -16,7 +21,6 @@ class Accounts(db.Model, ToDictMixin):
     point = db.Column(db.Integer, default=0, nullable=True, doc='포인트')
     evnt_point = db.Column(db.Integer, default=0, nullable=True, doc='이벤트포인트')
     device_id = db.Column(db.String(200), doc='안드로이드 아이디')
-    created_at = db.Column(db.DateTime, nullable=False, doc='작성일')
 
     def __init__(self, name, email, nickname, passwd, device_id,
                  profile_img=None, voice=None, point=0, evnt_point=0):
@@ -29,4 +33,3 @@ class Accounts(db.Model, ToDictMixin):
         self.voice = voice
         self.point = point
         self.evnt_point = evnt_point
-        self.created_at = datetime.datetime.now()

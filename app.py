@@ -41,6 +41,7 @@ app.register_blueprint(auth)
 app.register_blueprint(acnt)
 app.register_blueprint(productor_profile)
 
+
 # db
 db.init_app(app)
 # redis
@@ -49,19 +50,13 @@ redis_db.init_app(app)
 migrate = Migrate(app, db)
 
 
-@app.route('/')
-def test():
-    redis_db.set('id', 'capture1')
-    redis_db.expire('id', 20)
-    return 'test'
-
-
 @app.before_request
 def boefore_request():
     ignore_list = (
         url_for('auth.login'),
-        url_for('accounts.accounts')
+        url_for('accounts.accounts'),
     )
+
     current_url = request.path
     email = request.values.get('email')
 

@@ -5,9 +5,9 @@ from flask import request, jsonify
 from api.database import db
 from .models import Accounts
 from common.crypto import passwd_crypt
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 import api.status as STATUS
-import pymysql.err
+
 
 acnt = Blueprint('accounts', __name__)
 
@@ -29,18 +29,17 @@ def accounts():
 
         return jsonify(status=STATUS.SUCCESS)
 
-    except IntegrityError as e:
+    except IntegrityError:
         db.session.rollback()
         return jsonify(status=STATUS.DUPLICATE_ERR)
 
-    except pymysql.err.OperationalError as e:
+    except OperationalError:
         return jsonify(status=STATUS.DB_CONNECT_ERR)
 
     except AttributeError:
         return jsonify(status=STATUS.NONTYPE_ERR)
 
-    except Exception as e:
-        print(str(e))
+    except Exception:
         return jsonify(status=STATUS.ACCOUNT_ERR)
 
 
