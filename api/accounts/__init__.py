@@ -6,14 +6,14 @@ from api.database import db
 from .models import Accounts
 from common.crypto import passwd_crypt
 from sqlalchemy.exc import IntegrityError
-import settings
+import api.status as STATUS
 import pymysql.err
 
-acnt = Blueprint('account', __name__)
+acnt = Blueprint('accounts', __name__)
 
 
-@acnt.route('/account', methods=['POST', 'GET'])
-def account():
+@acnt.route('/accounts', methods=['POST', 'GET'])
+def accounts():
     """ 회원가입 """
     try:
         name = request.values.get('name')
@@ -27,21 +27,21 @@ def account():
         db.session.add(result)
         db.session.commit()
 
-        return jsonify(status=settings.SUCCESS)
+        return jsonify(status=STATUS.SUCCESS)
 
     except IntegrityError as e:
         db.session.rollback()
-        return jsonify(status=settings.DUPLICATE_ERR)
+        return jsonify(status=STATUS.DUPLICATE_ERR)
 
     except pymysql.err.OperationalError as e:
-        return jsonify(status=settings.DB_CONNECT_ERR)
+        return jsonify(status=STATUS.DB_CONNECT_ERR)
 
     except AttributeError:
-        return jsonify(status=settings.NONTYPE_ERR)
+        return jsonify(status=STATUS.NONTYPE_ERR)
 
     except Exception as e:
         print(str(e))
-        return jsonify(status=settings.ACCOUNT_ERR)
+        return jsonify(status=STATUS.ACCOUNT_ERR)
 
 
 @acnt.route('/duplicate/email/<email>', methods=['GET'])

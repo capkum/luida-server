@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import class_mapper
+from flask_redis import FlaskRedis
 import uuid
 
 db = SQLAlchemy()
+# redis
+redis_db = FlaskRedis()
 
 
 class ToDictMixin(object):

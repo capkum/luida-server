@@ -1,12 +1,13 @@
 import http
 
-from flask import Flask, jsonify
-from api.database import db
+from flask import Flask
+from flask import jsonify, request, url_for  # noqa
+from api.database import db, redis_db
 from api.auth import auth
-from api.account import acnt
+from api.accounts import acnt
 from api.product import productor_profile
 from flask_migrate import Migrate
-
+import api.status as STATUS  # noqa
 
 TARGET_HTTP_ERROR_CODES = (
     http.client.BAD_REQUEST,
@@ -39,9 +40,34 @@ app.config.from_object('settings')
 app.register_blueprint(auth)
 app.register_blueprint(acnt)
 app.register_blueprint(productor_profile)
+
+# db
 db.init_app(app)
+# redis
+redis_db.init_app(app)
 # migrate
 migrate = Migrate(app, db)
+
+
+@app.route('/')
+def test():
+    redis_db.set('id', 'capture1')
+    redis_db.expire('id', 20)
+    return 'test'
+
+
+@app.before_request
+def boefore_request():
+    ignore_list = (
+        url_for('auth.login'),
+        url_for('accounts.accounts')
+    )
+    current_url = request.path
+    email = request.values.get('email')
+
+    if current_url not in ignore_list:
+        if redis_db.get(email) is None:
+            return jsonify(status=STATUS.TOKEN_AUTH_ERRO)
 
 
 def error_handler(err):
