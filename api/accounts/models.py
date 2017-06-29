@@ -4,6 +4,8 @@ from api.database import ToDictMixin
 from api.database import db
 import datetime
 
+from common.crypto import passwd_crypt
+
 
 class TimestampMxin(object):
     updated_at = db.Column(db.DateTime, default=datetime.datetime.now())
@@ -27,7 +29,7 @@ class Accounts(db.Model, ToDictMixin, TimestampMxin):
         self.name = name
         self.email = email
         self.nickname = nickname
-        self.passwd = passwd
+        self.passwd = passwd_crypt(passwd)
         self.device_id = device_id
         self.profile_img = profile_img
         self.voice = voice
