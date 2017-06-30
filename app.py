@@ -2,6 +2,9 @@ import http
 
 from flask import Flask
 from flask import jsonify, request, url_for  # noqa
+
+from sqlalchemy.exc import IntegrityError, OperationalError
+
 from api.database import db, redis_db
 from api.auth import auth
 from api.accounts import acnt
@@ -77,6 +80,39 @@ def error_handler(err):
 
 for error in TARGET_HTTP_ERROR_CODES:
     app.register_error_handler(error, error_handler)
+
+
+@app.errorhandler(OperationalError)
+def handle_db_operational_err(err):
+    error_response = jsonify(
+        code=STATUS.DB_OPERATION_ERR,
+        name='Database operational error',
+        message=str(err)
+    )
+    db.session.rollback()
+    return error_response
+
+
+@app.errorhandler(IntegrityError)
+def handle_db_integrity_err(err):
+    error_response = jsonify(
+        code=STATUS.DUPLICATE_ERR,
+        name='Database integrity error',
+        message=str(err)
+    )
+    db.session.rollback()
+    return error_response
+
+
+@app.errorhandler(AttributeError)
+def handle_attribute_err(err):
+    error_response = jsonify(
+        code=http.client.INTERNAL_SERVER_ERROR,
+        name='Attrubute error',
+        message=str(err)
+    )
+    db.session.rollback()
+    return error_response
 
 
 if __name__ == '__main__':
