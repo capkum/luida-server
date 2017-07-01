@@ -3,7 +3,8 @@ import http
 from flask import Flask
 from flask import jsonify, request, url_for  # noqa
 
-from sqlalchemy.exc import IntegrityError, OperationalError
+from sqlalchemy.exc import IntegrityError, OperationalError, InternalError
+from sqlalchemy.exc import DataError
 
 from api.database import db, redis_db
 from api.auth import auth
@@ -110,6 +111,28 @@ def handle_attribute_err(err):
         code=http.client.INTERNAL_SERVER_ERROR,
         name='Attrubute error',
         message=str(err)
+    )
+    db.session.rollback()
+    return error_response
+
+
+@app.errorhandler(InternalError)
+def handle_db_internal_err(err):
+    error_response = jsonify(
+        code=STATUS.UNKOWN_COLUMN_ERR,
+        name='Unknown column error',
+        # message=str(err)
+    )
+    db.session.rollback()
+    return error_response
+
+
+@app.errorhandler(DataError)
+def handle_db_data_err(err):
+    error_response = jsonify(
+        code=STATUS.TOO_LONG_CULUMN_ERR,
+        name='Data too long for column',
+        # message=str(err)
     )
     db.session.rollback()
     return error_response

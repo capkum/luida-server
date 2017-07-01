@@ -22,3 +22,8 @@ TOKEN_AUTH_ERRO = 3001
 
 # 인증 사진 업로드 사이즈 에러
 IMG_SIZE_ERR = 5000
+
+
+# db error
+UNKOWN_COLUMN_ERR = 1054
+TOO_LONG_CULUMN_ERR = 1406
