@@ -99,7 +99,7 @@ def handle_db_integrity_err(err):
     error_response = jsonify(
         code=STATUS.DUPLICATE_ERR,
         name='Database integrity error',
-        message=str(err)
+        # message=str(err)
     )
     db.session.rollback()
     return error_response

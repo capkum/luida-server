@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint
+
 from api.accounts.registe_proc import register
+import api.auth.auth_proc
 
 acnt = Blueprint('accounts', __name__)
 
@@ -11,15 +13,13 @@ def accounts():
     return register()
 
 
-# @acnt.route('/duplicate/email/<email>', methods=['GET'])
-# def email_duplicate_check(email):
-#     """ 이메일 중복 체크 """
-#     result = Accounts.query.filter_by(email=email).first()
-#     return jsonify(duplicate=bool(result))
+@acnt.route('/account/emailChk/<email>', methods=['GET'])
+def emailChk(email):
+    """ 이메일검사 """
+    return api.auth.auth_proc.get_account_by_email(email, 'check')
 
 
-# @acnt.route('/duplicate/nickname/<nickname>', methods=['GET'])
-# def nickname_duplicate_check(nickname):
-#     """ 별명 중복 검사  """
-#     result = Accounts.query.filter_by(nickname=nickname).first()
-#     return jsonify(duplicate=bool(result))
+@acnt.route('/account/nkChk/<nickname>', methods=['GET'])
+def nkChk(nickname):
+    """ 이메일검사 """
+    return api.auth.auth_proc.get_account_by_nickname(nickname)
