@@ -6,6 +6,7 @@ import api.auth.auth_proc as auth
 from .models import Accounts
 from api.accounts import acnt
 from api.database import db
+from api.common.utils import get_account_by_email
 
 
 @acnt.route('/accounts', methods=['POST'])
@@ -28,7 +29,8 @@ def accounts():
 @acnt.route('/account/emailChk/<email>', methods=['GET'])
 def emailChk(email):
     """ 이메일검사 """
-    return auth.get_account_by_email(email, 'check')
+    account = get_account_by_email(email)
+    return jsonify(account.to_dict())
 
 
 @acnt.route('/account/nkChk/<nickname>', methods=['GET'])
