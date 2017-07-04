@@ -1,12 +1,16 @@
-# -*- coding: utf-8 -*-
-
 from flask import request, jsonify
-from .models import Accounts
-from api.database import db
+
 import api.status as STATUS
+import api.auth.auth_proc as auth
+
+from .models import Accounts
+from api.accounts import acnt
+from api.database import db
 
 
-def register():
+@acnt.route('/accounts', methods=['POST'])
+def accounts():
+    """ 회원가입 """
     """ 회원 가입 """
     name = request.values.get('name')
     email = request.values.get('email')
@@ -19,8 +23,18 @@ def register():
     db.session.commit()
 
     return jsonify(status=STATUS.SUCCESS)
-    # result = [account.to_dict() for account in Accounts.query.all()]
-    # return jsonify(accounts=result)
+
+
+@acnt.route('/account/emailChk/<email>', methods=['GET'])
+def emailChk(email):
+    """ 이메일검사 """
+    return auth.get_account_by_email(email, 'check')
+
+
+@acnt.route('/account/nkChk/<nickname>', methods=['GET'])
+def nkChk(nickname):
+    """ 이메일검사 """
+    return auth.get_account_by_nickname(nickname)
 
 
 def duplicate_check():
