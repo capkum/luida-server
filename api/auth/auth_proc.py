@@ -10,12 +10,14 @@ from common.crypto import token_generator
 import api.status as STATUS
 import settings as SETTINGS
 
+from api.common.utils import get_account_by_email
+
 
 def login_proc():
     "로그인"
     email = request.values.get('email')
     passwd = request.values.get('passwd')
-    result = get_account_by_email(email, 'data')
+    result = get_account_by_email(email)
 
     if check_password_hash(result.passwd, passwd):
         # 토큰 생성
@@ -37,18 +39,6 @@ def login_proc():
 
     else:
         return jsonify(status=STATUS.LOGIN_ERR)
-
-
-def get_account_by_email(email, mode='check'):
-    """
-    이메일 체크및 데이터 반환
-    """
-    result = Accounts.query.filter_by(email=email).first_or_404()
-    if mode is 'check':
-        return jsonify(result.to_dict())
-
-    else:
-        return result
 
 
 def get_account_by_nickname(nickname):
