@@ -1,2 +1,0 @@
-# luida-server
-luida -server
