@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import hashlib
 import base64
 from Crypto import Random  # noqa

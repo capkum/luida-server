@@ -13,7 +13,7 @@ class TimestampMxin(object):
 
 class Accounts(db.Model, ToDictMixin, TimestampMxin):
     seq = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(12), nullable=False, doc='이름')
+    name = db.Column(db.String(60), nullable=False, doc='이름')
     email = db.Column(db.String(120), unique=True, nullable=False, doc='email')
     nickname = db.Column(db.String(20), unique=True, nullable=False, doc='별명')
     passwd = db.Column(db.String(128), nullable=False, doc='비밀번호')
