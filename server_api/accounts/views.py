@@ -1,23 +1,27 @@
 # -*- coding: utf-8 -*-
 
-from flask import request, jsonify
+from flask import jsonify, request
 from server_api.accounts import acnt
-from server_api.database import db
-from .models import Accounts
+from server_api.common.validate import validate_param
+from .account_dao import registe_account
+
 import luida_server.status as STATUS
 
 
 @acnt.route('/account', methods=['POST'])
-def reg_account():
+def account():
+    status_code = STATUS.SUCCESS
+    
+    if not validate_param('name', request.values.get('name')):
+        status_code = STATUS.NAME_ERR
 
-    name = request.values.get('name')
-    email = request.values.get('email')
-    nickname = request.values.get('nickname')
-    passwd = request.values.get('passwd')
-    device_id = request.values.get('device_id')
+    elif not validate_param('email', request.values.get('email')):
+        status_code = STATUS.EMAIL_ERR
 
-    result = Accounts(name, email, nickname, passwd, device_id)
-    db.session.add(result)
-    db.session.commit()
+    elif not validate_param('passwd', request.values.get('passwd')):
+        status_code = STATUS.PASSWD_ERR
 
-    return jsonify(status=STATUS.SUCCESS)
+    else:
+        status_code = registe_account()
+
+    return jsonify(status=status_code)

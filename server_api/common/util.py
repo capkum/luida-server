@@ -32,3 +32,11 @@ def check_upload_folder(userid):
     2. gallery
     """
     pass
+
+
+def lr_trim(value):
+    """
+    문자열의 양옆끝의 공백을 제거
+    value 공백제거해야될 문자열
+    """
+    return str.strip(value)
