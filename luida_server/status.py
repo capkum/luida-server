@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# -*- coding: utf-8 -*-
-
 # 상태코드
 SUCCESS = 200
 DB_CONNECT_ERR = 2000
