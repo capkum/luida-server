@@ -38,7 +38,7 @@ TARGET_HTTP_ERROR_CODES = (
 def error_handler(err):
     """error to JSON format"""
     error_response = jsonify(
-        code=getattr(err, 'code', http.client.INTERNAL_SERVER_ERROR),
+        status=getattr(err, 'code', http.client.INTERNAL_SERVER_ERROR),
         name=getattr(err, 'name', 'Unkonwn'),
         message=getattr(err, 'description', '')
     )
@@ -53,7 +53,7 @@ for error in TARGET_HTTP_ERROR_CODES:
 @app.errorhandler(OperationalError)
 def handle_db_operational_err(err):
     error_response = jsonify(
-        code=STATUS.DB_OPERATION_ERR,
+        status=STATUS.DB_OPERATION_ERR,
         name='Database operational error',
         message=str(err)
     )
@@ -64,7 +64,7 @@ def handle_db_operational_err(err):
 @app.errorhandler(IntegrityError)
 def handle_db_integrity_err(err):
     error_response = jsonify(
-        code=STATUS.DUPLICATE_ERR,
+        status=STATUS.DUPLICATE_ERR,
         name='Database integrity error',
         # message=str(err)
     )
@@ -75,7 +75,7 @@ def handle_db_integrity_err(err):
 @app.errorhandler(AttributeError)
 def handle_attribute_err(err):
     error_response = jsonify(
-        code=http.client.INTERNAL_SERVER_ERROR,
+        status=http.client.INTERNAL_SERVER_ERROR,
         name='Attrubute error',
         message=str(err)
     )
@@ -86,7 +86,7 @@ def handle_attribute_err(err):
 @app.errorhandler(InternalError)
 def handle_db_internal_err(err):
     error_response = jsonify(
-        code=STATUS.UNKOWN_COLUMN_ERR,
+        status=STATUS.UNKOWN_COLUMN_ERR,
         name='Unknown column error',
         # message=str(err)
     )
@@ -97,7 +97,7 @@ def handle_db_internal_err(err):
 @app.errorhandler(DataError)
 def handle_db_data_err(err):
     error_response = jsonify(
-        code=STATUS.TOO_LONG_CULUMN_ERR,
+        status=STATUS.TOO_LONG_CULUMN_ERR,
         name='Data too long for column',
         # message=str(err)
     )
