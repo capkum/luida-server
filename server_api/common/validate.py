@@ -20,7 +20,7 @@ def validate_param(key, value):
     pattern = re.compile(regx[key])
     rt = pattern.match(str.strip(value))
 
-    return True if rt is not None else False
+    return True if rt else False
 
 
 if __name__ == '__main__':
