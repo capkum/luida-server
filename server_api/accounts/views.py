@@ -11,7 +11,7 @@ import luida_server.status as STATUS
 @acnt.route('/account', methods=['POST'])
 def account():
     status_code = STATUS.SUCCESS
-    
+
     if not validate_param('name', request.values.get('name')):
         status_code = STATUS.NAME_ERR
 
