@@ -15,8 +15,6 @@ db.init_app(app)
 redis_db.init_app(app)
 migrate = Migrate(app, db)
 
-# CORS
-from luida_server.hooks import * # noqa
 
 # blueprint
 app.register_blueprint(acnt)
