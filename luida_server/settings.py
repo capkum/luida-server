@@ -35,6 +35,17 @@ class DevelopmentConfig(Config):
     SERVER_NAME = '127.0.0.1:5000'
 
 
+class TestLuidaConfig(Config):
+    DEBUG = True
+    SERVER_NAME = '127.0.0.1:5000'
+
+    # mariaDB
+    DB_URI = 'mysql+pymysql://luida:luida123@localhost/test_luida?charset=utf8'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = DB_URI
+    ALEMBIC_INI = '/Users/capkum/Desktop/luida-server/migrations/alembic.ini'
+
+
 class QaConfig(Config):
     pass
 
