@@ -9,6 +9,7 @@ from sqlalchemy.orm import sessionmaker
 from alembic.command import upgrade as alembic_upgrade
 from alembic.config import Config as alembicConfig
 from server_api.auth.views import auth
+from server_api.accounts.views import acnt
 from flask_redis import FlaskRedis
 
 
@@ -16,14 +17,15 @@ from flask_redis import FlaskRedis
 def create_app():
     app = Flask(__name__)
     db = SQLAlchemy()
+
     # setting
     app.config.from_object('luida_server.settings.TestLuidaConfig')
 
     db.init_app(app)
     migrate = Migrate(app, db)  # noqa
-    FlaskRedis().init_app(app)
 
     app.register_blueprint(auth)
+    app.register_blueprint(acnt)
 
     app_context = app.app_context()
     app_context.push()
@@ -60,7 +62,6 @@ def session(db):
     session = db['session']()
     g.db = session
     yield session
-
     session.rollback()
     session.close()
 
