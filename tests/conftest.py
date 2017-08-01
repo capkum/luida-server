@@ -10,7 +10,6 @@ from alembic.command import upgrade as alembic_upgrade
 from alembic.config import Config as alembicConfig
 from server_api.auth.views import auth
 from server_api.accounts.views import acnt
-from flask_redis import FlaskRedis
 
 
 @pytest.fixture(scope='session')

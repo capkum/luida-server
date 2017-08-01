@@ -29,16 +29,14 @@ def test_signup(flask_client):
 
     try:
         res = flask_client.post('/account', data=dumy_data)
-        print(res.status_code)
     except exc.IntegrityError as e:
         print(str(e.orig))
-
     except Exception as e:
         print(str(e.orig))
     assert res.status_code == 200
 
 
-def test_signin(flask_client):
+def test_signin(flask_client, create_app):
     res = flask_client.post('/login', data=dumy_data)
     assert res.status_code == 200
 
